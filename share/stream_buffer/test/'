@@ -1,0 +1,51 @@
+#include "unit_test.h"
+
+#include "../stream_buffer.h"
+#include "../stream_buffer_container.h"
+
+
+
+
+void streamBuffer_UnitTest()
+{
+	std::cout << "Hello World" << "\n";
+
+	std::shared_ptr<StreamBufferContainer> sbContainer = std::make_shared<StreamBufferContainer>();
+
+
+
+	std::thread th1([&]()
+	{
+		for(int i=0; i<2; i++ )
+		{
+			std::cout << "th1 started" << "\n";
+			usleep(100000);
+			std::unique_ptr<SBSegment> segment = std::make_unique<SBSegment>();
+			segment->_controlBlock._reserved = htons(20);
+			sbContainer->pushOne( std::move(segment) );
+			std::cout << "pushed -> " << 10 << "\n";
+		}
+	});
+
+
+	std::thread th2([&]()
+	{
+		for(int i=0; i<2; i++ )
+		{
+			std::cout << "th2 started" << "\n";
+			usleep(100000);
+			std::unique_ptr<SBSegment> segment;
+			segment = sbContainer->popOne();
+			std::cout << "poped <- " << ntohs( segment->_controlBlock._reserved ) << "\n";
+		}
+	});
+
+
+	th1.join();
+	th2.join();
+
+	
+
+	return;
+}
+
