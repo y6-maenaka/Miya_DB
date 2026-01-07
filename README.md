@@ -1,6 +1,6 @@
 # MIYA_DB
 
-MiyaCoin向けカスタムKey-Valueデータベースシステム
+<a href="https://github.com/y6-maenaka/miya_core">MiyaCoin</a>向けカスタムKey-Valueデータベースシステム
 
 ## 目次
 
